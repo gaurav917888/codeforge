@@ -1,1 +1,859 @@
-<iframe src="https://claude.site/public/artifacts/b62c7135-667e-4813-8f63-8646c9cb9916/embed" title="ibps-command-center.jsx" width="100%" height="600" frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>5-Month Fitness Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS & THEMES ============ */
+:root {
+  /* Default Dark Theme */
+  --bg:        #0A0B10;
+  --s1:        #13141C;
+  --s2:        #1B1C27;
+  --s3:        #232535;
+  --border:    #2C2E42;
+  --t1:        #EDF0FF;
+  --t2:        #9B9EBD;
+  --t3:        #5A5D7A;
+  --brand:     #6C63FF;
+  --brand-dim: rgba(108,99,255,.12);
+  --green:     #00D68F;
+  --green-dim: rgba(0,214,143,.1);
+  --orange:    #FF7A2F;
+  --lock-bg:   rgba(255, 122, 47, 0.1);
+
+  --c1: #4A9EFF; 
+  --c2: #00D68F; 
+  --c3: #00CFCF; 
+  --c4: #FF7A2F; 
+  --c5: #B57AEA; 
+  --c6: #FF4F8B; 
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+html[data-theme="light"] {
+  --bg:        #F4F6F8;
+  --s1:        #FFFFFF;
+  --s2:        #F9FAFC;
+  --s3:        #EDF0F5;
+  --border:    #E2E6EC;
+  --t1:        #111827;
+  --t2:        #4B5563;
+  --t3:        #6B7280;
+  --brand:     #5A52E6;
+  --brand-dim: rgba(90,82,230,.1);
+  --green:     #00B67A;
+  --green-dim: rgba(0,182,122,.1);
+  --orange:    #E6641F;
+  --lock-bg:   rgba(230, 100, 31, 0.1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ============ HEADER ============ */
+.app-header {
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.3s;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon {
+  width: 38px; height: 38px;
+  background: var(--brand-dim); border: 1px solid var(--brand);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.brand-title { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; color: var(--t1); }
+.brand-sub { font-size: 11px; color: var(--t3); font-weight: 500; margin-top: 1px; }
+
+.controls-group {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--s2);
+  color: var(--t2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+  font-size: 16px;
+}
+.icon-btn:hover { background: var(--s3); color: var(--t1); }
+
+.start-date-group {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 12px; cursor: pointer;
+}
+.start-date-group label {
+  font-size: 11px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .6px;
+}
+.start-date-group input[type="date"] {
+  background: transparent; border: none; color: var(--t1);
+  font-size: 13px; font-family: 'Space Mono', monospace; outline: none; cursor: pointer;
+}
+html[data-theme="dark"] .start-date-group input::-webkit-calendar-picker-indicator { filter: invert(.6); cursor: pointer; }
+html[data-theme="light"] .start-date-group input::-webkit-calendar-picker-indicator { filter: invert(0); cursor: pointer; }
+
+/* Progress */
+.progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.progress-label { font-size: 11px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: .5px; }
+.progress-pct { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--green); }
+.progress-track { height: 6px; background: var(--s3); border-radius: 100px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #00FFBD); border-radius: 100px; transition: width .6s ease; }
+
+/* ============ MAIN ============ */
+.main { max-width: 960px; margin: 0 auto; padding: 16px 16px 48px; }
+
+/* ============ STATS ROW ============ */
+.stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+@media (min-width: 600px) { .stats-row { grid-template-columns: repeat(4, 1fr); } }
+.stat-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; }
+.stat-num { font-family: 'Space Mono', monospace; font-size: 24px; font-weight: 700; color: var(--brand); letter-spacing: -1px; }
+.stat-lbl { font-size: 11px; color: var(--t3); font-weight: 600; margin-top: 4px; text-transform: uppercase; }
+.stat-card.bonus-card { background: var(--lock-bg); border-color: rgba(255,122,47,0.3); }
+.stat-card.bonus-card .stat-num { color: var(--orange); }
+
+/* ============ MONTH NAV ============ */
+.month-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 14px;
+}
+.nav-arrow {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--s2); color: var(--t2);
+  font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.nav-arrow:hover:not(:disabled) { background: var(--brand); border-color: var(--brand); color: white; }
+.nav-arrow:disabled { opacity: .3; cursor: not-allowed; }
+.month-info { text-align: center; }
+.month-label { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -0.5px; }
+.phase-label { font-size: 11px; color: var(--t3); margin-top: 3px; font-weight: 600; text-transform: uppercase; }
+
+/* ============ VIEWS CONTAINER ============ */
+.view-container { margin-bottom: 16px; }
+
+/* CALENDAR GRID VIEW */
+.calendar-wrap {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px;
+}
+.dow-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px; }
+.dow-row span { text-align: center; font-size: 10px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: .8px; padding: 4px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-day { border-radius: var(--radius-sm); padding: 6px; min-height: 72px; display: flex; flex-direction: column; position: relative; transition: transform .15s, box-shadow .15s; }
+.cal-day.empty { background: transparent; }
+.cal-day.out-prog { background: var(--s2); opacity: 0.5; }
+.cal-day.rest-day { background: var(--s2); border: 1px dashed var(--border); }
+.cal-day.locked { background: var(--s2); opacity: 0.6; cursor: not-allowed; border: 1px solid var(--border); }
+.cal-day.workout-day { border: 1px solid transparent; cursor: pointer; }
+.cal-day.workout-day:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,.15); z-index: 4; }
+.cal-day.is-today .date-num-wrap { background: var(--brand); color: white; border-radius: 50%; }
+
+.date-num-wrap { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+.date-num { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--t2); }
+.workout-badge { font-size: 9px; font-weight: 700; color: white; padding: 3px 4px; border-radius: 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;}
+.rest-tag, .lock-tag { font-size: 9px; color: var(--t3); text-align: center; margin-top: 6px; font-weight: 600; }
+.comp-dot { position: absolute; bottom: 5px; right: 5px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; }
+.comp-dot.full { background: var(--green); color: #000; }
+.comp-dot.partial { background: var(--orange); color: white; }
+
+/* SLOT (LIST) VIEW */
+.slot-wrap { display: none; flex-direction: column; gap: 8px; }
+.slot-day { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; transition: border-color 0.2s; }
+.slot-day.locked { opacity: 0.6; cursor: not-allowed; }
+.slot-day.rest-day { border-style: dashed; }
+.slot-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; position: relative; }
+.slot-header:hover { background: var(--s2); }
+.s-date { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--t2); min-width: 50px; }
+.s-today { color: var(--brand); font-weight: 800; }
+.s-title { flex: 1; font-size: 14px; font-weight: 600; color: var(--t1); display: flex; align-items: center; gap: 8px;}
+.s-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; }
+.s-progress { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--t3); }
+.s-chevron { font-size: 14px; color: var(--t3); transition: transform 0.3s; }
+.slot-day.open .s-chevron { transform: rotate(180deg); }
+.slot-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); background: var(--s1); }
+.slot-day.open .slot-body { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============ EXERCISE ITEMS (Shared across List & Modal) ============ */
+.ex-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--s2); border: 1.5px solid transparent; cursor: pointer; transition: all .15s; margin-top: 6px; }
+.ex-item:hover { background: var(--s3); }
+.ex-item.done { background: var(--green-dim); border-color: rgba(0,182,122,.3); }
+.ex-cb { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--border); background: var(--s3); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; color: transparent; font-size: 13px; font-weight: 800; }
+.ex-item.done .ex-cb { background: var(--green); border-color: var(--green); color: #FFF; }
+.ex-info { flex: 1; min-width: 0; }
+.ex-name { font-size: 14px; font-weight: 600; color: var(--t1); transition: color .15s; }
+.ex-item.done .ex-name { text-decoration: line-through; color: var(--t3); }
+.ex-detail { font-size: 12px; color: var(--t3); margin-top: 3px; }
+
+.section-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--t3); margin: 16px 0 8px; }
+.info-box { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13px; color: var(--t2); line-height: 1.55; }
+
+/* ============ MODAL (For Grid View) ============ */
+.backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 300; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s; }
+@media (min-width: 600px) { .backdrop { align-items: center; padding: 20px; } }
+.backdrop.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--s1); width: 100%; max-width: 500px; max-height: 90vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; overflow: hidden; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .3s cubic-bezier(.16,1,.3,1); }
+@media (min-width: 600px) { .modal { border-radius: var(--radius-lg); border: 1px solid var(--border); } }
+.backdrop.open .modal { transform: translateY(0); }
+
+.modal-head { padding: 18px 20px; position: relative; flex-shrink: 0; }
+.drag-handle { width: 40px; height: 5px; background: rgba(255,255,255,.3); border-radius: 3px; margin: 0 auto 16px; }
+@media (min-width: 600px) { .drag-handle { display: none; } }
+.close-btn { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.1); color: white; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+.m-phase-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.8); margin-bottom: 4px; }
+.m-title { font-size: 24px; font-weight: 800; color: white; letter-spacing: -0.5px; }
+.m-meta { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+.m-meta span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.8); display: flex; align-items: center; gap: 4px; }
+
+.modal-body { overflow-y: auto; flex: 1; padding: 0 20px 24px; }
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Day progress inside modal/slot */
+.day-progress { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; margin-top: 16px; }
+.day-prog-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.day-prog-label { font-size: 12px; font-weight: 700; color: var(--t2); }
+.day-prog-count { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--t3); }
+.day-prog-track { height: 6px; background: var(--s3); border-radius: 100px; overflow: hidden; }
+.day-prog-fill { height: 100%; border-radius: 100px; background: var(--green); transition: width .3s; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">🚀</div>
+      <div>
+        <div class="brand-title">5-Month Fitness Plan</div>
+        <div class="brand-sub">Bonus Month included at 85% completion!</div>
+      </div>
+    </div>
+    <div class="controls-group">
+      <div class="start-date-group">
+        <label for="startDateInput">Start Date</label>
+        <input type="date" id="startDateInput" min="2026-06-15" max="2026-11-15">
+      </div>
+      <button class="icon-btn" id="themeToggle" title="Toggle Light/Dark Mode">🌓</button>
+      <button class="icon-btn" id="viewToggle" title="Toggle Calendar/List View">📄</button>
+    </div>
+  </div>
+  <div class="progress-row">
+    <span class="progress-label">Overall Program Progress</span>
+    <span class="progress-pct" id="progPct">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progFill" style="width:0%"></div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="statDone">0</div>
+      <div class="stat-lbl">Days Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statWeek">—</div>
+      <div class="stat-lbl">Current Week</div>
+    </div>
+    <div class="stat-card bonus-card" id="statBonus">
+      <div class="stat-num" id="statUnlock">0%</div>
+      <div class="stat-lbl" id="statUnlockLbl">Unlock M5 (85% Req)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statTotalDays">112</div>
+      <div class="stat-lbl">Total Workouts</div>
+    </div>
+  </div>
+
+  <!-- Month navigation -->
+  <div class="month-nav">
+    <button class="nav-arrow" id="prevBtn">&#8592;</button>
+    <div class="month-info">
+      <div class="month-label" id="monthLabel">— —</div>
+      <div class="phase-label" id="phaseSub">Loading…</div>
+    </div>
+    <button class="nav-arrow" id="nextBtn">&#8594;</button>
+  </div>
+
+  <!-- Views -->
+  <div class="view-container">
+    <!-- Grid View -->
+    <div class="calendar-wrap" id="gridView">
+      <div class="dow-row">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- Slot/List View -->
+    <div class="slot-wrap" id="slotView"></div>
+  </div>
+
+</main>
+
+<!-- MODAL (For Grid View) -->
+<div class="backdrop" id="backdrop">
+  <div class="modal" id="modal">
+    <div class="modal-head" id="modalHead">
+      <div class="drag-handle"></div>
+      <button class="close-btn" id="closeBtn">✕</button>
+      <div class="m-phase-tag" id="mPhase">Phase</div>
+      <div class="m-title" id="mTitle">Workout</div>
+      <div class="m-meta">
+        <span>📅 <span id="mDate">–</span></span>
+        <span>⏱ <span id="mDur">–</span></span>
+        <span>📋 Day <span id="mDay">–</span></span>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────
+// CONSTANTS & PROGRAM DATA
+// ─────────────────────────────────────────────────
+const COLORS = { day1:'#4A9EFF', day2:'#00D68F', day3:'#00CFCF', day4:'#FF7A2F', day5:'#B57AEA', day6:'#FF4F8B' };
+const SHORT = { day1:'Upper Body', day2:'Hips & Legs', day3:'Mobility', day4:'Core & Glutes', day5:'Full Body', day6:'Flexibility' };
+
+const WARM_UP = '5-min warm-up: Easy marching · Shoulder/Hip circles. Never skip to prevent injury.';
+const COOL_DOWN = '5-min cool-down: Slow walking + gentle static stretching.';
+const FORM_TIPS = 'Stop any exercise if you feel sharp pain\nExhale during effort, inhale during recovery';
+
+// Exercises Array Data
+const P = {
+  m1p1: { label: 'Month 1 · Weeks 1–2', dur: '25 min', note: '1 set per exercise. Move slowly. Speed is not the goal.',
+    day1: [ {n:'Wall Push-Up', d:'5 reps · 1 set'}, {n:'Shoulder Blade Squeeze', d:'Hold 3s · 6 reps · 1 set'}, {n:'Chest Stretch', d:'2×15 sec'} ],
+    day2: [ {n:'Sit-to-Stand from Chair', d:'5 reps · 1 set'}, {n:'Hip Marching', d:'5 reps/side · 1 set'}, {n:'Glute Bridge', d:'5 reps · 1 set'} ],
+    day3: [ {n:'Easy Walking', d:'8 mins'}, {n:'Arm/Ankle Circles', d:'10 each way'}, {n:'Cat-Cow', d:'5 slow reps'} ],
+    day4: [ {n:'Dead Bug (easy)', d:'5 reps/side · 1 set'}, {n:'Bird Dog', d:'5 reps/side · 1 set'}, {n:'Clamshell', d:'5 reps/side · 1 set'} ],
+    day5: [ {n:'Single-Leg Stand', d:'15 sec/side'}, {n:'Sit-to-Stand', d:'5 reps · 1 set'}, {n:'Wall Push-Up', d:'5 reps · 1 set'} ],
+    day6: [ {n:'Chest Stretch', d:'2×15 sec'}, {n:'Hip Flexor Stretch', d:'2×15 sec/side'}, {n:'Hamstring Stretch', d:'2×15 sec/side'} ]
+  },
+  m1p2: { label: 'Month 1 · Weeks 3–4', dur: '25 min', note: '2 sets per main exercise. Focus on symmetry.',
+    day1: [ {n:'Wall Push-Up', d:'6–8 reps · 2 sets'}, {n:'Shoulder Blade Squeeze', d:'6 reps · 2 sets'}, {n:'Chest Stretch', d:'2×20 sec'} ],
+    day2: [ {n:'Sit-to-Stand', d:'6–8 reps · 2 sets'}, {n:'Hip Marching', d:'5 reps/side · 2 sets'}, {n:'Glute Bridge', d:'6–8 reps · 2 sets'} ],
+    day3: [ {n:'Walking', d:'10 mins'}, {n:'Arm/Ankle Circles', d:'10 each way'}, {n:'Cat-Cow', d:'5 reps'} ],
+    day4: [ {n:'Dead Bug', d:'5 reps/side · 2 sets'}, {n:'Bird Dog', d:'5 reps/side · 2 sets'}, {n:'Clamshell', d:'6-8 reps/side · 2 sets'} ],
+    day5: [ {n:'Single-Leg Stand', d:'20 sec/side'}, {n:'Sit-to-Stand', d:'6-8 reps · 2 sets'}, {n:'Wall Push-Up', d:'6-8 reps · 2 sets'} ],
+    day6: [ {n:'Chest Stretch', d:'2×20 sec'}, {n:'Hip Flexor Stretch', d:'2×20 sec/side'}, {n:'Hamstring Stretch', d:'2×20 sec/side'} ]
+  },
+  m2: { label: 'Month 2 · Weeks 5–8', dur: '30 min', note: '2 sets · 8–10 reps. Start each unilateral exercise with the weaker side.',
+    day1: [ {n:'Incline Push-Up', d:'8 reps · 2 sets'}, {n:'Shoulder Blade Squeeze', d:'10 reps · 2 sets'}, {n:'Chin Tuck', d:'6 reps · 2 sets'} ],
+    day2: [ {n:'Sit-to-Stand', d:'8 reps · 2 sets'}, {n:'Glute Bridge', d:'8 reps · 2 sets'}, {n:'Calf Raise', d:'10 reps · 2 sets'} ],
+    day3: [ {n:'Brisk Walking', d:'12 mins'}, {n:'Spinal Wave', d:'6 reps'}, {n:'Hip Circles', d:'10/side'} ],
+    day4: [ {n:'Bird Dog', d:'6 reps/side · 2 sets'}, {n:'Dead Bug', d:'6 reps/side · 2 sets'}, {n:'Glute Bridge Hold', d:'15 sec · 2 sets'} ],
+    day5: [ {n:'Single-Leg Stand', d:'20 sec/side · 2 sets'}, {n:'Step-Up', d:'6 reps/side · 2 sets'}, {n:'Incline Push-Up', d:'8 reps · 2 sets'} ],
+    day6: [ {n:'Full Body Stretches', d:'2 rounds × 25 sec each stretch (Hips, Chest, Back)'} ]
+  },
+  m3: { label: 'Month 3 · Weeks 9–12', dur: '35 min', note: '3 sets · 8–12 reps. Quality over quantity.',
+    day1: [ {n:'Incline Push-Up', d:'8–10 reps · 3 sets'}, {n:'Shoulder Blade Squeeze', d:'12 reps · 3 sets'}, {n:'Chest Stretch', d:'2×25 sec'} ],
+    day2: [ {n:'Sit-to-Stand', d:'10 reps · 3 sets'}, {n:'Glute Bridge', d:'10 reps · 3 sets'}, {n:'Clamshell', d:'10 reps/side · 3 sets'} ],
+    day3: [ {n:'Walking', d:'15 mins'}, {n:'Trunk Rotation', d:'5/side'}, {n:'Ankle Mobility', d:'10/side'} ],
+    day4: [ {n:'Bird Dog', d:'8 reps/side · 3 sets'}, {n:'Side Leg Raise', d:'10 reps/side · 3 sets'}, {n:'Glute Bridge Hold', d:'20 sec · 3 sets'} ],
+    day5: [ {n:'Single-Leg Stand', d:'30 sec/side · 3 sets'}, {n:'Step-Up', d:'8 reps/side · 3 sets'}, {n:'Sit-to-Stand', d:'10 reps · 2 sets'} ],
+    day6: [ {n:'Full Body Stretches', d:'2 rounds × 30 sec each stretch (Hips, Hamstrings, Chest)'} ]
+  },
+  m4: { label: 'Month 4 · Weeks 13–16', dur: '40 min', note: '3 sets · 10–15 reps. Consistency over intensity.',
+    day1: [ {n:'Knee Push-Up', d:'10–12 reps · 3 sets'}, {n:'Shoulder Squeeze', d:'12 reps · 3 sets'}, {n:'Chin Tuck', d:'8 reps · 3 sets'} ],
+    day2: [ {n:'Box Squat', d:'10–12 reps · 3 sets'}, {n:'Glute Bridge', d:'12 reps · 3 sets'}, {n:'Step-Up', d:'10 reps/side · 3 sets'} ],
+    day3: [ {n:'Walking', d:'20 mins'}, {n:'Spinal Rotation', d:'6/side'}, {n:'Ankle Mobility', d:'10/side'} ],
+    day4: [ {n:'Bird Dog', d:'10 reps/side · 3 sets'}, {n:'Dead Bug', d:'10 reps/side · 3 sets'}, {n:'Glute Bridge Hold', d:'30 sec · 3 sets'} ],
+    day5: [ {n:'Single-Leg Stand', d:'30 sec/side · 3 sets'}, {n:'Step-Up', d:'10 reps/side · 3 sets'}, {n:'Knee Push-Up', d:'10 reps · 3 sets'} ],
+    day6: [ {n:'Full Body Stretches', d:'2 rounds × 30 sec each + Spinal Twist'} ]
+  },
+  // BONUS MONTH
+  m5: { label: 'Month 5 · BONUS! Weeks 17–20', dur: '45 min', note: '🎉 CONGRATULATIONS! You unlocked the Bonus Month. Reps & sets increased by ~15%!',
+    day1: [ {n:'Knee Push-Up', d:'12–15 reps · 4 sets'}, {n:'Shoulder Squeeze', d:'15 reps · 4 sets'}, {n:'Chin Tuck', d:'10 reps · 4 sets'} ],
+    day2: [ {n:'Box Squat', d:'12–15 reps · 4 sets'}, {n:'Glute Bridge', d:'15 reps · 4 sets'}, {n:'Step-Up', d:'12 reps/side · 4 sets'} ],
+    day3: [ {n:'Brisk Walking', d:'25 mins'}, {n:'Spinal Rotation', d:'8/side'}, {n:'Ankle Mobility', d:'12/side'} ],
+    day4: [ {n:'Bird Dog', d:'12 reps/side · 4 sets'}, {n:'Dead Bug', d:'12 reps/side · 4 sets'}, {n:'Glute Bridge Hold', d:'40 sec · 3 sets'} ],
+    day5: [ {n:'Single-Leg Stand', d:'40 sec/side · 3 sets'}, {n:'Step-Up', d:'12 reps/side · 4 sets'}, {n:'Knee Push-Up', d:'12 reps · 4 sets'} ],
+    day6: [ {n:'Full Body Stretches', d:'3 rounds × 30 sec each + Deep Breathing'} ]
+  }
+};
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+// ─────────────────────────────────────────────────
+// STATE & LOCAL STORAGE
+// ─────────────────────────────────────────────────
+function parseLocalDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d, 0,0,0,0);
+}
+
+const todayRaw = new Date(); todayRaw.setHours(0,0,0,0);
+
+// Constraints
+const MIN_DATE_STR = '2026-06-15';
+const MAX_DATE_STR = '2026-11-15';
+const minDate = parseLocalDate(MIN_DATE_STR);
+const maxDate = parseLocalDate(MAX_DATE_STR);
+
+function getStartDate() {
+  const saved = localStorage.getItem('fp_start');
+  if (saved) {
+    let dt = parseLocalDate(saved);
+    if(dt < minDate) dt = minDate;
+    if(dt > maxDate) dt = maxDate;
+    return dt;
+  }
+  return minDate;
+}
+
+let startDate = getStartDate();
+let viewDate  = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+let currentWorkout = null;
+let isM5Unlocked = false;
+
+// Settings logic
+let currentTheme = localStorage.getItem('fp_theme') || 'dark';
+let currentView  = localStorage.getItem('fp_view') || 'grid';
+document.documentElement.setAttribute('data-theme', currentTheme);
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('fp_theme', currentTheme);
+});
+
+document.getElementById('viewToggle').addEventListener('click', () => {
+  currentView = currentView === 'grid' ? 'slot' : 'grid';
+  localStorage.setItem('fp_view', currentView);
+  renderMonthView();
+});
+
+// ─────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────
+function dayDiff(a, b) { return Math.round((b - a) / 86400000); }
+function getPD(date) { return dayDiff(startDate, date) + 1; }
+
+function getPhase(pd) {
+  if (pd <= 14) return P.m1p1;
+  if (pd <= 28) return P.m1p2;
+  if (pd <= 56) return P.m2;
+  if (pd <= 84) return P.m3;
+  if (pd <= 112) return P.m4;
+  return P.m5;
+}
+
+function getDayKey(pd) {
+  const c = ((pd - 1) % 7) + 1;
+  return c === 7 ? 'rest' : 'day' + c;
+}
+
+function getWorkout(pd) {
+  if (pd < 1 || pd > 140) return null;
+  const dk = getDayKey(pd);
+  if (dk === 'rest') return { isRest: true, pd };
+  const phase = getPhase(pd);
+  return { isRest: false, pd, dk, exercises: phase[dk], title: SHORT[dk], color: COLORS[dk], dur: phase.dur, label: phase.label, note: phase.note };
+}
+
+function storKey(pd, i) { return `fp_${pd}_${i}`; }
+function isDone(pd, i)  { return localStorage.getItem(storKey(pd, i)) === '1'; }
+function toggleDone(pd, i) {
+  const k = storKey(pd, i);
+  localStorage.getItem(k) === '1' ? localStorage.removeItem(k) : localStorage.setItem(k, '1');
+  updateProgress();
+  renderMonthView(); // Refresh ui inline
+  if(currentWorkout && currentWorkout.pd === pd) refreshModalProgress();
+}
+
+function getCompletion(w) {
+  if (!w || w.isRest) return null;
+  const total = w.exercises.length;
+  let done = 0;
+  for (let i = 0; i < total; i++) if (isDone(w.pd, i)) done++;
+  return { done, total };
+}
+
+// ─────────────────────────────────────────────────
+// PROGRESS & UNLOCK LOGIC
+// ─────────────────────────────────────────────────
+function updateProgress() {
+  let doneM1M4 = 0, totalM1M4 = 0;
+  let doneAll = 0, totalAll = 0;
+  let completedDays = 0, totalDays = 0;
+
+  for (let pd = 1; pd <= 140; pd++) {
+    const w = getWorkout(pd);
+    if (!w || w.isRest) continue;
+    
+    const total = w.exercises.length;
+    let done = 0;
+    for (let i = 0; i < total; i++) if (isDone(pd, i)) done++;
+    
+    if(pd <= 112) { totalM1M4 += total; doneM1M4 += done; }
+    
+    // Total for available progression
+    totalAll += total; doneAll += done;
+    if (done === total && total > 0) completedDays++;
+    totalDays++;
+  }
+
+  // Check Unlock
+  const unlockPct = totalM1M4 > 0 ? (doneM1M4 / totalM1M4) : 0;
+  isM5Unlocked = unlockPct >= 0.85;
+
+  const pctStr = Math.round(unlockPct * 100) + '%';
+  document.getElementById('statUnlock').textContent = isM5Unlocked ? 'UNLOCKED! 🎉' : `${pctStr} / 85%`;
+  
+  if (isM5Unlocked) {
+    document.getElementById('statBonus').style.background = 'rgba(0, 214, 143, 0.1)';
+    document.getElementById('statBonus').style.borderColor = 'rgba(0, 214, 143, 0.3)';
+    document.getElementById('statUnlock').style.color = 'var(--green)';
+    document.getElementById('statTotalDays').textContent = '140';
+  } else {
+    document.getElementById('statBonus').style.background = 'var(--lock-bg)';
+    document.getElementById('statBonus').style.borderColor = 'rgba(255,122,47,0.3)';
+    document.getElementById('statUnlock').style.color = 'var(--orange)';
+    document.getElementById('statTotalDays').textContent = '112';
+  }
+
+  // Prog Bar (Based on unlocked days)
+  let activeTotal = isM5Unlocked ? totalAll : totalM1M4;
+  let activeDone = isM5Unlocked ? doneAll : doneM1M4;
+  const overallPct = activeTotal > 0 ? Math.round((activeDone / activeTotal) * 100) : 0;
+  
+  document.getElementById('progFill').style.width = overallPct + '%';
+  document.getElementById('progPct').textContent  = overallPct + '%';
+  document.getElementById('statDone').textContent = completedDays;
+
+  const todayPD = getPD(todayRaw);
+  document.getElementById('statWeek').textContent = (todayPD >= 1 && todayPD <= (isM5Unlocked ? 140 : 112)) ? Math.ceil(todayPD / 7) : '—';
+}
+
+// ─────────────────────────────────────────────────
+// UI RENDERING (Grid vs Slot)
+// ─────────────────────────────────────────────────
+function renderMonthView() {
+  const year = viewDate.getFullYear(), month = viewDate.getMonth();
+  document.getElementById('monthLabel').textContent = `${MONTH_NAMES[month]} ${year}`;
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month+1, 0);
+  const daysInMonth = lastDay.getDate();
+  
+  // Identify Phase string for Header
+  const pds = new Set();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const pd = getPD(new Date(year, month, d));
+    if (pd >= 1 && pd <= 140) pds.add(getPhase(pd).label.split('·')[0].trim());
+  }
+  document.getElementById('phaseSub').textContent = pds.size ? [...pds].join(' / ') : 'Outside range';
+
+  // Navigation limits
+  const maxProgDays = isM5Unlocked ? 140 : 112;
+  const endDate = new Date(startDate.getTime() + maxProgDays*86400000);
+  const startMo = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  const endMo = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+  
+  document.getElementById('prevBtn').disabled = viewDate <= startMo;
+  document.getElementById('nextBtn').disabled = viewDate >= endMo;
+
+  const gWrap = document.getElementById('gridView');
+  const sWrap = document.getElementById('slotView');
+  
+  if (currentView === 'grid') {
+    gWrap.style.display = 'block';
+    sWrap.style.display = 'none';
+    renderGrid(year, month, firstDay, daysInMonth);
+  } else {
+    gWrap.style.display = 'none';
+    sWrap.style.display = 'flex';
+    renderSlotList(year, month, daysInMonth);
+  }
+}
+
+function renderGrid(year, month, firstDay, daysInMonth) {
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  let dow = (firstDay.getDay() + 6) % 7; // Mon=0
+  for (let i = 0; i < dow; i++) grid.appendChild(createEl('div', 'cal-day empty'));
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d, 0,0,0,0);
+    const pd = getPD(date);
+    const cell = createEl('div', 'cal-day');
+    
+    if (date.getTime() === todayRaw.getTime()) cell.classList.add('is-today');
+    
+    const dWrap = createEl('div', 'date-num-wrap');
+    dWrap.innerHTML = `<span class="date-num">${d}</span>`;
+    cell.appendChild(dWrap);
+
+    if (pd < 1 || pd > 140) {
+      cell.classList.add('out-prog');
+    } else if (pd > 112 && !isM5Unlocked) {
+      cell.classList.add('locked');
+      cell.innerHTML += `<div class="lock-tag">🔒 Locked</div>`;
+    } else {
+      const w = getWorkout(pd);
+      if (w.isRest) {
+        cell.classList.add('rest-day');
+        cell.innerHTML += `<div class="rest-tag">😴 Rest</div>`;
+      } else {
+        cell.classList.add('workout-day');
+        cell.style.background = `${w.color}15`; // 15 opacity hex
+        cell.style.borderColor = `${w.color}40`;
+
+        const badge = createEl('div', 'workout-badge');
+        badge.style.background = w.color;
+        badge.textContent = w.title;
+        cell.appendChild(badge);
+
+        const comp = getCompletion(w);
+        if (comp && comp.done > 0) {
+          const dot = createEl('div', `comp-dot ${comp.done === comp.total ? 'full' : 'partial'}`);
+          dot.textContent = comp.done === comp.total ? '✓' : comp.done;
+          cell.appendChild(dot);
+        }
+        cell.addEventListener('click', () => openModal(w, date));
+      }
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function renderSlotList(year, month, daysInMonth) {
+  const wrap = document.getElementById('slotView');
+  // Preserve open states
+  const openStates = {};
+  wrap.querySelectorAll('.slot-day.open').forEach(el => {
+    openStates[el.dataset.pd] = true;
+  });
+
+  wrap.innerHTML = '';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d, 0,0,0,0);
+    const pd = getPD(date);
+    if (pd < 1 || pd > 140) continue; // Hide out-of-bounds days in list view
+
+    const isToday = date.getTime() === todayRaw.getTime();
+    const dayStr = date.toLocaleDateString('en-US', { weekday:'short', day:'numeric' });
+    
+    const slot = createEl('div', 'slot-day');
+    slot.dataset.pd = pd;
+    if (openStates[pd]) slot.classList.add('open');
+
+    if (pd > 112 && !isM5Unlocked) {
+      slot.classList.add('locked');
+      slot.innerHTML = `
+        <div class="slot-header">
+          <div class="s-date ${isToday?'s-today':''}">${dayStr}</div>
+          <div class="s-title">🔒 Bonus Month Locked</div>
+        </div>`;
+      wrap.appendChild(slot);
+      continue;
+    }
+
+    const w = getWorkout(pd);
+    if (w.isRest) {
+      slot.classList.add('rest-day');
+      slot.innerHTML = `
+        <div class="slot-header">
+          <div class="s-date ${isToday?'s-today':''}">${dayStr}</div>
+          <div class="s-title" style="color:var(--t3)">😴 Rest Day</div>
+        </div>`;
+      wrap.appendChild(slot);
+      continue;
+    }
+
+    const comp = getCompletion(w);
+    
+    const header = createEl('div', 'slot-header');
+    header.innerHTML = `
+      <div class="s-date ${isToday?'s-today':''}">${dayStr}</div>
+      <div class="s-title">
+        <span class="s-badge" style="background:${w.color}">${w.title}</span>
+      </div>
+      <div class="s-progress" style="color:${comp.done===comp.total?'var(--green)':'var(--t3)'}">${comp.done}/${comp.total}</div>
+      <div class="s-chevron">▼</div>
+    `;
+    
+    const body = createEl('div', 'slot-body');
+    // Note & Tips
+    body.innerHTML += `<div class="info-box" style="margin-top:10px"><b>📋 Phase:</b> ${w.note}</div>`;
+    
+    // Exercise list
+    w.exercises.forEach((ex, idx) => {
+      const item = buildExerciseItem(w.pd, idx, ex);
+      body.appendChild(item);
+    });
+
+    header.addEventListener('click', () => slot.classList.toggle('open'));
+    
+    slot.appendChild(header);
+    slot.appendChild(body);
+    wrap.appendChild(slot);
+  }
+  
+  if (wrap.innerHTML === '') {
+    wrap.innerHTML = `<div class="info-box" style="text-align:center">No workouts in this month.</div>`;
+  }
+}
+
+// ─────────────────────────────────────────────────
+// EXERCISE ITEM BUILDER
+// ─────────────────────────────────────────────────
+function buildExerciseItem(pd, idx, ex) {
+  const item = createEl('div', 'ex-item');
+  const d = isDone(pd, idx);
+  if (d) item.classList.add('done');
+  
+  item.innerHTML = `
+    <div class="ex-cb">${d ? '✓' : ''}</div>
+    <div class="ex-info">
+      <div class="ex-name">${ex.n}</div>
+      <div class="ex-detail">${ex.d}</div>
+    </div>`;
+    
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleDone(pd, idx);
+  });
+  return item;
+}
+
+function createEl(tag, className) {
+  const el = document.createElement(tag);
+  if(className) el.className = className;
+  return el;
+}
+
+// ─────────────────────────────────────────────────
+// MODAL LOGIC (For Grid View Only)
+// ─────────────────────────────────────────────────
+function openModal(w, date) {
+  currentWorkout = w;
+  const head = document.getElementById('modalHead');
+  head.style.background = `linear-gradient(140deg, ${w.color}DD 0%, ${w.color}99 100%)`;
+
+  document.getElementById('mPhase').textContent = w.label;
+  document.getElementById('mTitle').textContent = w.title;
+  document.getElementById('mDate').textContent = date.toLocaleDateString('en-IN',{ weekday:'short', day:'numeric', month:'short' });
+  document.getElementById('mDur').textContent = w.dur;
+  document.getElementById('mDay').textContent = w.pd;
+
+  const body = document.getElementById('modalBody');
+  body.innerHTML = '';
+
+  body.innerHTML += `<div class="section-lbl">📋 Phase Note</div><div class="info-box">${w.note}</div>`;
+  body.innerHTML += `<div class="section-lbl">🌤 Warm-Up</div><div class="info-box">${WARM_UP}</div>`;
+  body.innerHTML += `<div class="section-lbl">💪 Exercises</div>`;
+  
+  const exContainer = createEl('div');
+  w.exercises.forEach((ex, idx) => {
+    exContainer.appendChild(buildExerciseItem(w.pd, idx, ex));
+  });
+  body.appendChild(exContainer);
+
+  body.innerHTML += `<div class="section-lbl">🌙 Cool-Down</div><div class="info-box">${COOL_DOWN}</div>`;
+  body.innerHTML += `<div class="section-lbl">📌 Tips</div><div class="info-box">${FORM_TIPS.replace(/\n/g,'<br>')}</div>`;
+  
+  const prog = createEl('div', 'day-progress');
+  prog.id = 'modalProg';
+  body.appendChild(prog);
+  refreshModalProgress();
+
+  document.getElementById('backdrop').classList.add('open');
+  body.scrollTop = 0;
+}
+
+function refreshModalProgress() {
+  if (!currentWorkout) return;
+  const comp = getCompletion(currentWorkout);
+  if (!comp) return;
+  const pct = comp.total > 0 ? Math.round(comp.done/comp.total*100) : 0;
+  const box = document.getElementById('modalProg');
+  if (box) box.innerHTML = `
+    <div class="day-prog-row">
+      <span class="day-prog-label">Session Progress</span>
+      <span class="day-prog-count">${comp.done} / ${comp.total}</span>
+    </div>
+    <div class="day-prog-track">
+      <div class="day-prog-fill" style="width:${pct}%"></div>
+    </div>`;
+}
+
+function closeModal() {
+  document.getElementById('backdrop').classList.remove('open');
+  currentWorkout = null;
+}
+
+document.getElementById('closeBtn').addEventListener('click', closeModal);
+document.getElementById('backdrop').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+// ─────────────────────────────────────────────────
+// EVENTS & INIT
+// ─────────────────────────────────────────────────
+document.getElementById('prevBtn').addEventListener('click', () => {
+  viewDate.setMonth(viewDate.getMonth()-1); renderMonthView();
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  viewDate.setMonth(viewDate.getMonth()+1); renderMonthView();
+});
+
+const startInput = document.getElementById('startDateInput');
+startInput.value = [startDate.getFullYear(), String(startDate.getMonth()+1).padStart(2,'0'), String(startDate.getDate()).padStart(2,'0')].join('-');
+startInput.addEventListener('change', () => {
+  if (!startInput.value) return;
+  let dt = parseLocalDate(startInput.value);
+  if(dt < minDate) { dt = minDate; startInput.value = MIN_DATE_STR; }
+  if(dt > maxDate) { dt = maxDate; startInput.value = MAX_DATE_STR; }
+  
+  startDate = dt;
+  localStorage.setItem('fp_start', startInput.value);
+  viewDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  updateProgress();
+  renderMonthView();
+});
+
+// Init
+updateProgress();
+renderMonthView();
+</script>
+</body>
+</html>
