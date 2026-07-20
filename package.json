@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "2.44.0",
+    "@vercel/speed-insights": "^2.0.0",
     "file-saver": "^2.0.5",
     "js-beautify": "^2.0.3",
     "jszip": "^3.10.1",

@@ -1,5 +1,6 @@
 import './globals.css';
 import { Toaster } from 'sonner';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata = {
   title: 'XPro Tool — Unified Workspace',
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <Toaster position="top-right" richColors />
+        <SpeedInsights />
       </body>
     </html>
   );
